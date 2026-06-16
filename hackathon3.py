@@ -3,55 +3,46 @@ products = [
     {'id': 'P02', 'name': 'Bánh mì', 'price': 20000}
 ]
 
-def show_products(products_list) :
-    if products_list == [] :
+def show_products(products_list):
+    if products_list == []:
         print("Cửa hàng hiện chưa có sản phẩm nào!")
-    else :
-        print("-- DANH SÁCH SẢN PHẨM --")
-        print("ID   | Tên sản phẩm      | Giá bán")
-        for products in products_list :
-            print(f"{products['id']} | {products['name']} | {products['price']}")
-        print("--------------------------------------")
+        return
+
+    print("-- DANH SÁCH SẢN PHẨM --")
+    print("ID   | Tên sản phẩm      | Giá bán")
+    for prod in products_list:
+        print(f"{prod['id']} | {prod['name']} | {prod['price']}")
+    print("--------------------------------------")
 
 def add_product(products_list):
-    while True:
-        is_same = False
-        input_id = input("Nhập mã sản phẩm(ID): ").strip().upper()
-        if input_id == '':
-            print("Mã không được để trống!")
-            continue
+    input_id = input("Nhập mã sản phẩm(ID): ").strip().upper()
+    if input_id == '':
+        print("Mã không được để trống!")
+        return
 
-        for products in products_list:
-            if input_id == products['id']:
-                is_same = True
-                break
-        if is_same:
+    for prod in products_list:
+        if input_id == prod['id']:
             print("Mã tồn tại!")
-            continue 
-        break
+            return
 
-    while True:
-        add_name = input("Nhập tên sản phẩm: ").strip()
-        if add_name == '':
-            print("Tên sản phẩm ko được để trống!")
-            continue
-        break
+    add_name = input("Nhập tên sản phẩm: ").strip()
+    if add_name == '':
+        print("Tên sản phẩm ko được để trống!")
+        return
 
-    while True:
-        add_price_str = input("Nhập giá sản phẩm: ").strip()
-        if add_price_str == '':
-            print("Giá sản phẩm không được để trống!")
-            continue
+    add_price_str = input("Nhập giá sản phẩm: ").strip()
+    if add_price_str == '':
+        print("Giá sản phẩm không được để trống!")
+        return
+    if not add_price_str.isdigit():
+        print("Giá sản phẩm phải nhập là số!")
+        return
+    
+    add_price = int(add_price_str)
+    if add_price <= 0:
+        print("Giá bán phải lớn hơn 0!")
+        return
 
-        if not add_price_str.isdigit():
-            print("Giá sản phẩm phải nhập là số!")
-            continue
-
-        add_price = int(add_price_str)
-        if add_price <= 0:
-            print(f"Giá bán phải lớn hơn 0!")
-            continue
-        break 
     new_products = {
         'id': input_id,
         'name': add_name,
@@ -61,38 +52,31 @@ def add_product(products_list):
     print("Thêm sản phẩm thành công!")
 
 def update_price(products_list):
-    while True:
-        input_id = input("Nhập mã sản phẩm cần cập nhật (ID): ").strip().upper()
-        if input_id == '':
-            print("Mã không được để trống!")
-            continue
+    input_id = input("Nhập mã sản phẩm cần cập nhật (ID): ").strip().upper()
+    if input_id == '':
+        print("Mã không được để trống!")
+        return
 
-        for products in products_list:
-            if input_id == products['id']:
-                break
-        else:
-            print(f"Không tìm thấy sản phẩm có mã [{input_id}]!")
-            continue
-        break
+    for prod in products_list:
+        if input_id == prod['id']:
+            add_price_str = input("Nhập giá sản phẩm cần sửa giá: ").strip()
+            if add_price_str == '':
+                print("Giá sản phẩm không được để trống!")
+                return
+            if not add_price_str.isdigit():
+                print("Giá sản phẩm phải nhập là số!")
+                return
 
-    while True:
-        add_price_str = input("Nhập giá sản phẩm cần sửa giá: ").strip()
-        if add_price_str == '':
-            print("Giá sản phẩm không được để trống!")
-            continue
-
-        if not add_price_str.isdigit():
-            print("Giá sản phẩm phải nhập là số!")
-            continue
-
-        add_price = int(add_price_str)
-        if add_price <= 0:
-            print(f"Giá bán phải lớn hơn 0!")
-            continue
-        break 
-    
-    products['price'] = add_price
-    print(f"Cập nhật giá cho sản phẩm thành công!")
+            add_price = int(add_price_str)
+            if add_price <= 0:
+                print("Giá bán phải lớn hơn 0!")
+                return
+            
+            prod['price'] = add_price
+            print("Cập nhật giá cho sản phẩm thành công!")
+            return
+    else:
+        print(f"Không tìm thấy sản phẩm có mã [{input_id}]!")
 
 while True:
     print("""
@@ -105,7 +89,7 @@ while True:
 4. Thoát chương trình
 ======================================
 """)
-    choice = input("Nhập chức năng(1-4): ")
+    choice = input("Nhập chức năng(1-4): ").strip()
     if choice == '1':
         show_products(products)
     elif choice == '2':
@@ -115,5 +99,5 @@ while True:
     elif choice == '4':
         print("Thoát chương trình")
         break
-    else :
+    else:
         print("Vui lòng nhập lại(1-4)!")
